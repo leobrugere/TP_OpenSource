@@ -14,4 +14,4 @@ Imaginons que nous lançons 4 Wordpress, on va créer 2 BDD qui seront stockées
 
 ## Schéma 
 Voici un schéma récapitulant notre architecture : <br>
-![img](https://zupimages.net/viewer.php?id=19/47/j3qq.png)
+![img](images/Schema.png)
