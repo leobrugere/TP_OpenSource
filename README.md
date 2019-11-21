@@ -8,4 +8,4 @@ Le début de notre projet commence avec **Vagrant**. <br>Ce que l'on faire c'est
 
 Ensuite, les VM lancées auront **Ansible**, **Keepalived** et **Nginx** d'installés.
 
-Ansible sera là pour automatiser le déploiement de nos services (qui restent à définir) <br>Keepalive permettra de gérer la Haute Disponibilité (les deux serveurs ou VM auront la même IP et que si l'un tombe, l'autre prenne le relais) <br>Nginx fera le load balancing et de rediriger en fonction de la charge de l'une ou de l'autre.
+Ansible sera là pour automatiser le déploiement de nos services (qui restent à définir | Wordpress ? BDD ?) <br>Keepalive permettra de gérer la Haute Disponibilité (les deux serveurs ou VM auront la même IP et que si l'un tombe, l'autre prenne le relais) <br>Nginx fera le load balancing et de rediriger en fonction de la charge de l'une ou de l'autre.
