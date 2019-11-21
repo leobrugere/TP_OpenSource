@@ -4,7 +4,7 @@ Bonjour à vous,
 Ici, vous trouverez une petite synthèse du projet que l'on souhaite réaliser pour le cours d'Open Source :-)
 
 ## Le projet
-Le début de notre projet commence avec **Vagrant**. <br>Ce que l'on faire c'est, à travers des **Vagrantfile**, lancer des machines virtuelles. <br>Ces machines virtuelles seront pré-configurées et seront lancées sous Azure ou en local.
+Le début de notre projet commence avec **Vagrant**. <br>Via des **Vagrantfile(s)**, on va lancer des machines virtuelles. <br>Ces machines virtuelles seront pré-configurées et seront lancées sous Azure ou en local.
 
 Ensuite, les VM lancées auront **Ansible**, **Keepalived** et **Nginx** d'installés.
 
