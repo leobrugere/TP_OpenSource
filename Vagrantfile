@@ -1,27 +1,18 @@
-# Require the Azure provider plugin
-require 'vagrant-azure'
 
-# Create and configure the Azure VMs
-Vagrant.configure('2') do |config|
+Vagrant.configure("2") do |config|
 
-  # Use dummy Azure box
-  config.vm.box = 'azure-dummy'
 
-  # Specify SSH key
-  config.ssh.private_key_path = '~/.ssh/id_rsa'
+  config.vm.box = "centos/7"
+  config.vm.box_check_update = false
 
-  # Configure the Azure provider
-  config.vm.provider 'azure' do |az, override|
-    # Pull Azure AD service principal information from environment variables
-    az.tenant_id = '87bf3584-6de5-4095-931c-233c8ca91305'
-    az.client_id = '566a5d26-92d4-4d19-ba6d-04ca36e8f165'
-    az.client_secret ='84e4626b-dac3-43f7-9a62-7b9a7ee32bb0'
-    az.subscription_id = 'e60e9098-2f98-4ea4-bd32-a6ae88c2af33'
-
-    # Specify VM parameters
-    az.vm_name = 'aztest'
-    az.vm_size = 'Standard_B1s'
-    az.vm_image_urn = 'Canonical:UbuntuServer:16.04-LTS:latest'
-    az.resource_group_name = 'vagrant'
-  end # config.vm.provider 'azure'
-end # Vagrant.configure
+  config.vm.define "h1" do |host1|
+    host1.vm.network "private_network", ip: "192.168.56.10"
+  end
+  config.vm.define "h2" do |host2|
+    host2.vm.network "private_network", ip: "192.168.56.11"
+  end
+  config.vm.provision "shell", inline: <<-SHELL
+    yum -q -y install epel-release
+    yum -q -y install keepalived
+  SHELL
+end
