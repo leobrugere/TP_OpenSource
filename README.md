@@ -12,7 +12,6 @@ A savoir :
 
  - **ansible**
  - **keepalived**
- - **Nginx**
 
 Il y aura ensuite un ensemble de 4 VM qui pourront être étendu a un plus grand nombre si besoin, pour les besoins du projet nous avons choisis d'y héberger un wordpress sur chacune d'entre elle.
 
