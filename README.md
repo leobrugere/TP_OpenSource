@@ -5,9 +5,9 @@ Ici, vous trouverez une petite synthèse du projet que l'on souhaite réaliser p
 
 ## Le projet
 Le début de notre projet commence avec **Vagrant**.
-Via un **Vagrantfile**, Nous allons lancer deux machines virtuelles. 
-Ces machines virtuelles seront pré-configurées et seront lancées au choix de l'utilisateurs final sous Azure ou en local.
-Les deux premières VM auront des services pré installer et pré-configurer, 
+<br>Via un **Vagrantfile**, Nous allons lancer deux machines virtuelles. 
+<br>Ces machines virtuelles seront pré-configurées et seront lancées au choix de l'utilisateurs final sous Azure ou en local.
+<br>Les deux premières VM auront des services pré installer et pré-configurer, 
 A savoir :
 
  - **ansible**
