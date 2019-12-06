@@ -1,0 +1,35 @@
+- name: install and start mysql
+  hosts: mysql
+  remote_user: user01
+  become: true
+  roles:
+    - mysql
+
+- name: movingmaster
+  hosts: mysql
+  remote_user: user01
+  become: true
+  roles: 
+    - movingmaster
+
+- name: movingslave
+  hosts: mysql
+  remote_user: user01
+  become: true
+  roles: 
+    - movingslave
+
+- name: install unzip
+  hosts: all
+  remote_user: user01
+  become: true
+  roles:
+   - common
+
+- name: install and start apache2/php/wordpress
+  hosts: wordpress
+  remote_user: user01
+  become: true
+  roles:
+   - web
+

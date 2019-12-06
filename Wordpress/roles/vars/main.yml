@@ -1,0 +1,2 @@
+apache_vhosts:
+ - {servername: wordpress, doccument_root: /var/www/wordpress}
