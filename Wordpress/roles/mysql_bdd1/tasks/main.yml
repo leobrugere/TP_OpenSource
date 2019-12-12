@@ -31,5 +31,8 @@
     regexp: "^bind-address(.*)"
     line: 'bind-address = 10.0.0.10'
     backrefs: yes
-  notify:
-    - restart mysql
+
+- name: Restart Mysql
+  service: 
+    name: mysql
+    state: restarted

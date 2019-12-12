@@ -1,19 +1,26 @@
-- name: install and start mysql
-  hosts: mysql
+- name: install and start mysql 01
+  hosts: mysql_1
   remote_user: user01
   become: true
   roles:
-    - mysql
+    - mysql_bdd1
+
+- name: install and start mysql 02
+  hosts: mysql_2
+  remote_user: user01
+  become: true
+  roles:
+    - mysql_bdd2
 
 - name: movingmaster
-  hosts: mysql
+  hosts: replication
   remote_user: user01
   become: true
   roles: 
     - movingmaster
 
 - name: movingslave
-  hosts: mysql
+  hosts: replication
   remote_user: user01
   become: true
   roles: 
@@ -32,4 +39,11 @@
   become: true
   roles:
    - web
+
+- name: replication mysql
+  hosts: replication
+  remote_user: user01
+  become: true
+  roles:
+    - replicationmysql
 

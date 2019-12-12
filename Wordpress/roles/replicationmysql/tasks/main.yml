@@ -1,0 +1,24 @@
+# Stop mysql slave thread
+- mysql_replication:
+    mode: stopslave
+
+
+- mysql_replication:
+    mode: getmaster
+
+
+- mysql_replication:
+    mode: changemaster
+    master_host: 13.80.136.230
+    master_user : wp_user
+    master_password : erty
+    master_log_file: log-bin.000002
+    master_log_pos: 597
+
+
+- mysql_replication:
+    mode: getslave
+    login_host: 40.68.58.232
+    login_port: 3306
+    login_user : wp_user
+    login_password : erty

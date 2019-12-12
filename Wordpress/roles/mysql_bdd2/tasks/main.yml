@@ -1,0 +1,38 @@
+- name: install and start mysql
+  apt:
+   name: mysql-server
+   update-cache: yes
+  notify:
+   - enable mysql
+   - start mysql
+
+- name: Adds Python MySQL support on Debian/Ubuntu
+  apt: pkg="python-mysqldb" state=present
+  when: ansible_os_family == 'Debian'
+
+- name: create a new user
+  mysql_user:
+    name: wp_user
+    password: erty
+    priv: '*.*:ALL,GRANT'
+    state: present
+    login_user: root
+    host: '%'
+
+- mysql_db:
+    name: wordpress
+    state: present
+    login_user: wp_user
+    login_password: "erty"
+
+- name: commente le bind sur iplocal
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: "^bind-address(.*)"
+    line: 'bind-address = 10.0.0.5'
+    backrefs: yes
+
+- name: Restart Mysql
+  service: 
+    name: mysql
+    state: restarted
