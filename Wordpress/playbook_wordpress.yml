@@ -14,14 +14,14 @@
     - mysql_bdd2
 
 - name: movingmaster
-  hosts: replication
+  hosts: mysql_1
   remote_user: user01
   become: true
   roles: 
     - movingmaster
 
 - name: movingslave
-  hosts: replication
+  hosts: mysql_2
   remote_user: user01
   become: true
   roles: 
@@ -35,12 +35,12 @@
    - common
 
 #PARTIE WORDPRESS
-- name: install and start apache2/php/wordpress
-  hosts: wordpress
-  remote_user: user01
-  become: true
-  roles:
-   - web
+#- name: install and start apache2/php/wordpress
+#  hosts: wordpress
+#  remote_user: user01
+#  become: true
+#  roles:
+#   - web
 
 #PARTIE REPLICATION VM
 - name: replication mysql

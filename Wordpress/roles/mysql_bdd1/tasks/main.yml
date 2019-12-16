@@ -25,11 +25,11 @@
     login_user: wp_user
     login_password: "erty"
 
-- name: commente le bind sur iplocal
+- name: Changement sur iplocal
   lineinfile:
     path: /etc/mysql/mysql.conf.d/mysqld.cnf
     regexp: "^bind-address(.*)"
-    line: 'bind-address = 10.0.0.10'
+    line: 'bind-address = 10.0.0.5'
     backrefs: yes
 
 - name: Restart Mysql
