@@ -1,2 +1,7 @@
 apache_vhosts:
  - {servername: wordpress, doccument_root: /var/www/wordpress}
+
+ippub: 
+ - {bdd1: 52.157.176.65, bdd2: 52.148.242.81}
+
+

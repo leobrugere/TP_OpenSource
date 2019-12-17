@@ -4,7 +4,7 @@
   delegate_to: bdd1
   register: master
   when:
-    - mysql_replication_role == 'master'
+    - mysql_replication_role == 'slave'
 
 #Test de debug
 #- debug:
@@ -14,7 +14,7 @@
 
 #Grant replication ON SLAVE
 - name: Grant replication ON SLAVE
-  command: mysql -u wp_user -perty -Dwordpress -e "GRANT REPLICATION SLAVE ON *.* TO wp_user@13.81.244.153 IDENTIFIED BY 'erty';" -s -N
+  command: mysql -u wp_user -perty -Dwordpress -e "GRANT REPLICATION SLAVE ON *.* TO wp_user@52.148.242.81 IDENTIFIED BY 'erty';" -s -N
   delegate_to: bdd1
   when:
     - mysql_replication_role == 'master'
@@ -22,12 +22,12 @@
 - name: Replication sans grand interet
   mysql_replication:
     mode: changemaster
-    master_host: 40.68.188.186
+    master_host: 52.157.176.65
     master_user : wp_user
     master_password : erty
     master_log_file: "{{ master.File }}"
     master_log_pos: "{{ master.Position }}"
-  delegate_to: bdd2
+  #delegate_to: bdd2
   when:
     - mysql_replication_role == 'slave'
 

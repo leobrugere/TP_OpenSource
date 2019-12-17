@@ -29,7 +29,7 @@
   lineinfile:
     path: /etc/mysql/mysql.conf.d/mysqld.cnf
     regexp: "^bind-address(.*)"
-    line: 'bind-address = 10.0.0.5'
+    line: "bind-address = {{ ansible_default_ipv4.address }}"
     backrefs: yes
 
 - name: Restart Mysql
