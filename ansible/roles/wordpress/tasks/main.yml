@@ -1,0 +1,91 @@
+- name: install and start apache
+  become: true
+  apt:
+   name: apache2
+   update-cache: yes
+  notify:
+   - enable apache2
+   - start apache2
+
+- name: install and start php
+  become: true
+  apt:
+   name: php7.2
+   update-cache: yes
+
+# - apache2_module:
+#    state: present
+#    name: rewrite
+
+- name: Use local template for virtualhost on webserver
+  become: true
+  template:
+    src=vhost.conf.j2
+    dest=/etc/apache2/sites-available/{{item.servername}}.conf
+  with_items:
+    - "{{apache_vhosts}}"
+  notify:
+    - reload apache
+
+- name: Remove default apache virtualhost
+  become: true
+  file:
+    path=/etc/apache2/sites-enabled/000-default.conf
+    state=absent
+  notify:
+    - reload apache
+
+- name: Enable virtualhosts
+  become: true
+  file:
+    src=/etc/apache2/sites-available/{{item.servername}}.conf
+    dest=/etc/apache2/sites-enabled/{{item.servername}}.conf
+    state=link
+  with_items:
+    - "{{apache_vhosts}}"
+  notify:
+    - reload apache
+
+- name: Add servernames in hosts
+  become: true
+  lineinfile:
+    dest: /etc/hosts
+    state: present
+    line: "127.0.0.1 {{item.servername}}"
+  with_items:
+    - "{{apache_vhosts}}"
+
+- name: "rm index.html"
+  file: 
+    path: "/var/www/html/index.html"
+    state: absent
+  become: true
+
+- name: Unarchive wordpress that is already on the remote machine
+  become: true
+  unarchive:
+    src: https://fr.wordpress.org/wordpress-latest-fr_FR.zip
+    dest: /var/www/html
+    remote_src: yes
+
+- lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 wordpress'
+
+- name: "check sample db"
+  stat: 
+    path: "/var/www/html/wordpress/wp-config-sample.php"
+  register: check_sample
+
+- name: "rename sample"
+  command: mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+  when: check_sample.stat.exists == True
+  become: true
+
+- name: "config wp-config.php"
+  template:
+    src: ../templates/wp-config.php
+    dest: /var/www/html/wordpress/wp-config.php
+  become: true
+
+

@@ -1,0 +1,4 @@
+- name: Transfert Slave my.cnf
+  copy:
+    src: ../templates/slave-my.cnf
+    dest: /etc/mysql/my.cnf

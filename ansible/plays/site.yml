@@ -1,0 +1,45 @@
+- name: install common
+  hosts: all
+  roles: 
+    - role: '/home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/common'
+
+- name: install and configure keepAliveD
+  hosts: keep
+  roles: 
+    - role: '/home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/keep'
+
+- name: install and config nginx
+  hosts: keep
+  roles: 
+    - role: '/home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/nginx'
+
+- name: install and configure sql
+  hosts: sql
+  roles: 
+    - role: '/home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/bdd'
+
+- name: movingmaster
+  hosts: bdd1
+  remote_user: user01
+  become: true
+  roles: 
+    - /home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/movingmaster
+
+- name: movingslave
+  hosts: bdd2
+  remote_user: user01
+  become: true
+  roles: 
+    - /home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/movingslave
+
+- name: replication mysql
+  hosts: replication
+  remote_user: user01
+  become: true
+  roles:
+    - /home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/replicationmysql
+
+- name: install and configure wp
+  hosts: wordpress
+  roles: 
+    - role: '/home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/wordpress'

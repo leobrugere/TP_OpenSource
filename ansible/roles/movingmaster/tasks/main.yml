@@ -1,0 +1,4 @@
+- name: Transfert Master my.cnf
+  copy:
+    src: ../templates/master-my.cnf
+    dest: /etc/mysql/my.cnf 

@@ -1,0 +1,35 @@
+- name: "check sample nginx"
+  stat: 
+    path: "/etc/nginx/sites-available/default"
+  register: check_sample
+
+- name: "check sample nginx"
+  stat: 
+    path: "/etc/nginx/sites-enabled/default"
+  register: check_sample
+
+- name: "mv sample"
+  command: rm /etc/nginx/sites-available/default
+  when: check_sample.stat.exists == True
+  become: true
+
+- name: "mv sample"
+  command: rm /etc/nginx/sites-enabled/default
+  when: check_sample.stat.exists == True
+  become: true
+
+- name: "config keepalived.conf nginx"
+  template:
+    src: "/home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/nginx/templates/nginx"
+    dest: /etc/nginx/sites-available/default
+  become: true
+
+- name: "config keepalived.conf nginx"
+  command: ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+  become: true
+
+- name: Restart nginx
+  service: 
+    name: nginx
+    state: restarted
+  become: true

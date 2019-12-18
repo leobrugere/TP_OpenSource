@@ -1,0 +1,36 @@
+- name: Install keepalived and nginx
+  apt: name={{ item }} state=present
+  become: yes
+  with_items:
+    - keepalived
+    - nginx
+
+- name: "check sample keepalived.conf"
+  stat: 
+    path: "/etc/keepalived/keepalived.conf"
+  register: check_sample
+
+- name: "rename sample"
+  command: mv /etc/keepalived/keepalived.conf /etc/keepalived/keepalived.conf.old5 
+  when: check_sample.stat.exists == True
+  become: true
+
+- name: "config keepalived.conf keep1"
+  template:
+    src: "/home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/keep/templates/keepconf"
+    dest: /etc/keepalived/keepalived.conf
+  become: true
+  when: "'keep1' in inventory_hostname"
+
+- name: "config keepalived.conf keep2"
+  template:
+    src: "/home/pichel/Documents/cours/openSource/TP_OpenSource/ansible/roles/keep/templates/keepconf"
+    dest: /etc/keepalived/keepalived.conf
+  become: true
+  when: "'keep2' in inventory_hostname"
+
+- name: Restart keepalived
+  service: 
+    name: keepalived
+    state: restarted
+  become: true

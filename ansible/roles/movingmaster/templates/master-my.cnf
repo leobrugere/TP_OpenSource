@@ -1,0 +1,7 @@
+[mysqld]
+server-id = 1
+log_bin = /var/lib/mysql/log-bin.log
+binlog_format = row
+
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mysql.conf.d/
