@@ -1,5 +1,25 @@
-#Check replication status
-- name: Check master replication status.
+---
+- name: check if user on slave exist
+  mysql_user:
+    name: wp_user
+    host: 52.157.176.65
+    password: erty
+    priv: "*.*:REPLICATION SLAVE,REPLICATION CLIENT"
+    state: present
+  when:
+    - mysql_replication_role == 'master'
+
+- name: Vérifier l'état de la réplication sur Slave
+  mysql_replication:
+    mode: getslave
+    login_user: wp_user
+    login_password: erty
+  ignore_errors: true
+  register: slave
+  when:
+    - mysql_replication_role == 'slave'
+
+- name: Vérifier l'état de la réplication sur Master
   mysql_replication: mode=getmaster
   delegate_to: bdd1
   register: master
@@ -7,61 +27,23 @@
     - mysql_replication_role == 'slave'
 
 #Test de debug
-# - debug:
+#- debug:
 #    msg: "{{ master }}"
-#    msg: "{{ master.File }}"
-#    msg: "{{ master.Position}}"
 
-#Grant replication ON SLAVE
-- name: Grant replication ON SLAVE
-  command: mysql -u wp_user -perty -Dwordpress -e "GRANT REPLICATION SLAVE ON *.* TO wp_user@52.148.242.81 IDENTIFIED BY 'erty';" -s -N
-  delegate_to: bdd1
-  when:
-    - mysql_replication_role == 'master'
-
-- name: Replication
+- name: Configurer la replication sur le slave
   mysql_replication:
     mode: changemaster
     master_host: 52.157.176.65
-    master_user : wp_user
-    master_password : erty
+    master_user: wp_user
+    master_password: erty
     master_log_file: "{{ master.File }}"
     master_log_pos: "{{ master.Position }}"
-  #delegate_to: bdd2
+  ignore_errors: true
   when:
     - mysql_replication_role == 'slave'
 
-#Reset, flush and show on master
-- name: Reset, flush and show on master
-  command: mysql -u wp_user -perty -Dwordpress -e "RESET MASTER;" -s -N
-  command: mysql -u wp_user -perty -Dwordpress -e "FLUSH TABLES WITH READ LOCK;" -s -N
-  command: mysql -u wp_user -perty -Dwordpress -e "SHOW MASTER STATUS;" -s -N
-  delegate_to: bdd1
-  when:
-    - mysql_replication_role == 'master'
-
-
-# Stop mysql slave thread
-- name: Stop slave
-  mysql_replication:
-    mode: stopslave
-  delegate_to: bdd2
-  when:
-    - mysql_replication_role == 'slave'
-
-#Unlock tables on master
-- name: Unlock tables on master
-  command: mysql -u wp_user -perty -Dwordpress -e "UNLOCK TABLES;" -s -N
-  delegate_to: bdd1
-  when:
-    - mysql_replication_role == 'master'
-
-
-#Reset and start on slave
-- name: Reset and start on slave
-  command: mysql -u wp_user -perty -Dwordpress -e "RESET SLAVE;" -s -N
-  command: mysql -u wp_user -perty -Dwordpress -e "CHANGE MASTER TO MASTER_LOG_FILE='{{ master.File }}', MASTER_LOG_POS='{{ master.Position }}';" -s -N
-  command: mysql -u wp_user -perty -Dwordpress -e "START SLAVE;" -s -N
-  delegate_to: bdd2
+- name: Start replication
+  mysql_replication: 
+    mode: startslave
   when:
     - mysql_replication_role == 'slave'
