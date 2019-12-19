@@ -22,8 +22,7 @@ Un système de **réplica** sera également mis en place sur ces instances pour 
 
 Ci dessous un schéma récapitulant les différents services sur chaque Vm
 
-
-
+![img](images/diag2.png)
 
 ## Schéma 
 Voici un schéma récapitulant notre architecture : <br>
